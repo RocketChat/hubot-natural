@@ -44,7 +44,7 @@ module.exports = (_config, robot) ->
     msg = msg.replace(/\s+&/, '')
     nameInteraction = classifier.classify(msg)
     resposta = answers[nameInteraction]
-    res.send resposta
+    res.send "#{resposta}"
 #fix this 
 
     # robot[trigger] new RegExp(regex, pattern.options or 'i'), do (event, interaction, callback) ->
