@@ -1,3 +1,8 @@
+# dojo natural hubot v1
+woohooo
+
+
+
 # hubot-chat
 
 hubot-chat is a chat bot built on the [Hubot][hubot] framework. It was
