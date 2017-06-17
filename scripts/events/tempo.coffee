@@ -1,7 +1,7 @@
 path = require 'path'
 natural = require 'natural'
 
-{msgVariables, stringElseRandomKey} = require path.join '..', 'lib', 'common.coffee'
+{applyVariable, msgVariables, stringElseRandomKey} = require path.join '..', 'lib', 'common.coffee'
 answers = {}
 
 class respond
@@ -12,6 +12,9 @@ class respond
       when 'block'
         @interaction.message.forEach (line) ->
           message = msgVariables line, msg
+          message = applyVariable message, 'clima', 'Chuvoso'
+          message = applyVariable message, 'min', '3 °C'
+          message = applyVariable message, 'max', '12 °C'
           msg['send'] message
       when 'random'
         message = stringElseRandomKey @interaction.message
