@@ -14,9 +14,9 @@ Based on Heartbot, we introduced some NLP power from [NaturalNode](https://githu
 
 And so, the _magic_ happens...
 
-Welcome to *HubotNatural*, a new an exciting chatbot framework based in Hubot and NaturalNode libs, with an simple and extensible architecture designed by Digital Ocean's HeartBot Team, made with love and care by Rocket.Chat Team.  
+Welcome to *HubotNatural*, a new an exciting chatbot framework based in Hubot and NaturalNode libs, with an simple and extensible architecture designed by Digital Ocean's HeartBot Team, made with love and care by Rocket.Chat Team.
 
-We hope you enjoy the project and find some time to contribute.  
+We hope you enjoy the project and find some time to contribute.
 
 ## How it Works
 
@@ -96,82 +96,48 @@ To change the stemmers language, just set the environment variable `HUBOT_LANG` 
 
 ## Deploy with Docker
 
-We have a Dockerfile that builds a lightweight image based in Linux Alpine with all the repository content so you can upload that image to a docker registry and deploy your chatbot from there.
+You also can use docker compose files to load a local instance of Rocket.Chat, MongoDB and HubotNatural services, where you can change the parameters if you must. It is possible to run services on production or development mode, using the files `production.yml` and `development.yml` respectively.
 
-You also can use `docker-compose.yml` file to load a local instance of Rocket.Chat, MongoDB and HubotNatural services, where you can change the parameters if you must.
-
-The docker-compose file looks like this:
-
-```yaml
-version: '2'
-
-services:
-  rocketchat:
-    image: rocketchat/rocket.chat:latest
-    restart: unless-stopped
-    volumes:
-      - ./uploads:/app/uploads
-    environment:
-      - PORT=3000
-      - ROOT_URL=http://localhost:3000
-      - MONGO_URL=mongodb://mongo:27017/rocketchat
-      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
-      - MAIL_URL=smtp://smtp.email
-#       - HTTP_PROXY=http://proxy.domain.com
-#       - HTTPS_PROXY=http://proxy.domain.com
-    depends_on:
-      - mongo
-    ports:
-      - 3000:3000
-
-  mongo:
-    image: mongo:3.2
-    restart: unless-stopped
-    volumes:
-     - ./data/db:/data/db
-     #- ./data/dump:/dump
-    command: mongod --smallfiles --oplogSize 128 --replSet rs0
-
-  mongo-init-replica:
-    image: mongo:3.2
-    command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
-    depends_on:
-      - mongo
-
-  hubot-natural:
-    build: .
-    restart: unless-stopped
-    environment:
-      - HUBOT_ADAPTER=rocketchat
-      - HUBOT_NAME='Hubot Natural'
-      - HUBOT_OWNER=RocketChat
-      - HUBOT_DESCRIPTION='Hubot natural language processing'
-      - HUBOT_LOG_LEVEL=debug
-      - HUBOT_CORPUS=corpus.yml
-      - HUBOT_LANG=pt
-      - RESPOND_TO_DM=true
-      - RESPOND_TO_LIVECHAT=true
-      - RESPOND_TO_EDITED=true
-      - LISTEN_ON_ALL_PUBLIC=false
-      - ROCKETCHAT_AUTH=password
-      - ROCKETCHAT_URL=rocketchat:3000
-      - ROCKETCHAT_ROOM=GENERAL
-      - ROCKETCHAT_USER=botnat
-      - ROCKETCHAT_PASSWORD=botnatpass
-      - HUBOT_NATURAL_DEBUG_MODE=true
-    volumes:
-      - ./scripts:/home/hubotnat/bot/scripts
-      - ./training_data:/home/hubotnat/bot/training_data
-    depends_on:
-      - rocketchat
-    ports:
-      - 3001:8080
+### Development mode
+```sh
+docker-compose -f development.yml up -d mongo
+```
+```sh
+docker-compose -f development.yml up -d mongo-init-replica
+```
+```sh
+docker-compose -f development.yml up -d rocketchat
+```
+```sh
+docker-compose -f development.yml up hubot-natural
 ```
 
-You can change the attributes of variables and volumes to your specific needs and run `docker-compose up` in terminal to start the rocketchat service at `http://localhost:3000`.
-*ATTENTION:* You must remember that hubot must have a real rocketchat user created to login with. So by the first time you run this, you must first go into rocketchat and create a new user for hubot, change the `ROCKETCHAT_USER` and `ROCKETCHAT_PASSWORD` variables in the docker-compose.yml file, and then reload the services using `docker-compose stop && docker-compose up` to start it all over again.
+In case of services are running in development mode, its not necessary to do additional configurations, once the bot is automatically configurated by the script `docker/development/bot_config.sh`, executed by the previous command. Therefore the services must be properly running and ready to use!
 
-If you want to run only the hubot-natural service to connect an already running instance of Rocket.Chat, you just need to remember to set the `ROCKETCHAT_URL` to a correct value, like `https://open.rocket.chat`.
+### Production mode
+
+```sh
+docker-compose -f production.yml up -d mongo
+```
+```sh
+docker-compose -f production.yml up -d mongo-init-replica
+```
+```sh
+docker-compose -f production.yml up -d rocketchat
+```
+```sh
+docker-compose -f production.yml up hubot-natural
+```
+
+**In case of services are running in production mode, its necessary execute steps described at [bot config documentation](docs/CONFIG_BOT_EN.md)**
+
+For each mode there is a corresponding `Dockerfile` that builds a lightweight image based in Linux Alpine with all the repository content, so you can upload that image to a docker registry and deploy your chatbot from there if you want.
+
+*ATTENTION:* You must remember that hubot-natural must use login data of a real rocketchat user, in order to connect to rocketchat service. So by the first time you run this, you must first go into rocketchat and create a new user for hubot and then change the `ROCKETCHAT_USER` and `ROCKETCHAT_PASSWORD` variables in `production.yml` or `development.yml` file, according to the informations you used to create the user. After all its necessary reload the services using `docker-compose -f $env_yml stop && docker-compose -f $env_yml up`, where $env_yml must be `production.yml` or `development.yml` file, according to your needs.
+
+If you want to run only the hubot-natural service to connect an already running instance of Rocket.Chat, you just need to remember to set the `ROCKETCHAT_URL` to a correct value, like `https://open.rocket.chat`. And then run `docker-compose -f production.yml up hubot-natural` for production mode, or `docker-compose -f development.yml up hubot-natural` for development mode.
+
+The Rocketchat service is executed on port 3000, and Hubot-Natural on port 3001, so as defined on `production.yml` and `development.yml` files. In case of any of these ports are being used on your machine, change the configurations according to your needs.
 
 ## Deploy with Hubot
 
