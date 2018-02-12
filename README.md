@@ -99,6 +99,9 @@ To change the stemmers language, just set the environment variable `HUBOT_LANG` 
 You also can use docker compose files to load a local instance of Rocket.Chat, MongoDB and HubotNatural services, where you can change the parameters if you must. It is possible to run services on production or development mode, using the files `production.yml` and `development.yml` respectively.
 
 ### Development mode
+
+The first three services(mongo, mongo-init-replica, rocketchat) are being executed with `-d` flag, in order to make this services run in detached mode(background), once this services will probably not be restarted or modified in development time. For the Hubot Natural service instead, it's important to monitor logs and status.
+
 ```sh
 docker-compose -f development.yml up -d mongo
 ```
@@ -126,14 +129,14 @@ docker-compose -f production.yml up -d mongo-init-replica
 docker-compose -f production.yml up -d rocketchat
 ```
 ```sh
-docker-compose -f production.yml up hubot-natural
+docker-compose -f production.yml up -d hubot-natural
 ```
 
-**In case of services are running in production mode, its necessary execute steps described at [bot config documentation](docs/CONFIG_BOT_EN.md)**
+**In case of services are running in production mode, its necessary execute steps described at [bot config documentation](docs/config_bot.md)**
 
 For each mode there is a corresponding `Dockerfile` that builds a lightweight image based in Linux Alpine with all the repository content, so you can upload that image to a docker registry and deploy your chatbot from there if you want.
 
-*ATTENTION:* You must remember that hubot-natural must use login data of a real rocketchat user, in order to connect to rocketchat service. So by the first time you run this, you must first go into rocketchat and create a new user for hubot and then change the `ROCKETCHAT_USER` and `ROCKETCHAT_PASSWORD` variables in `production.yml` or `development.yml` file, according to the informations you used to create the user. After all its necessary reload the services using `docker-compose -f $env_yml stop && docker-compose -f $env_yml up`, where $env_yml must be `production.yml` or `development.yml` file, according to your needs.
+**ATTENTION:** You must remember that hubot-natural must use login data of a real rocketchat user, in order to connect to rocketchat service. So by the first time you run this, you must first go into rocketchat and create a new user for hubot and then change the `ROCKETCHAT_USER` and `ROCKETCHAT_PASSWORD` variables in `production.yml` or `development.yml` file, according to the informations you used to create the user. After all its necessary reload the services using `docker-compose -f $env_yml stop && docker-compose -f $env_yml up`, where $env_yml must be `production.yml` or `development.yml` file, according to your needs.
 
 If you want to run only the hubot-natural service to connect an already running instance of Rocket.Chat, you just need to remember to set the `ROCKETCHAT_URL` to a correct value, like `https://open.rocket.chat`. And then run `docker-compose -f production.yml up hubot-natural` for production mode, or `docker-compose -f development.yml up hubot-natural` for development mode.
 
@@ -208,6 +211,11 @@ bin/hubot
 wait a minute for the loading process, and then you can talk to mybot.
 
 Take a look to adapters to run your bot in other platafforms.
+
+## Configure Live Transfer
+
+It's possible to configure Hubot Natural to redirect conversation to a real person, in moments when the bot can not help users as much as needed.
+To activate and configure `Live Transfer` feature, follow the steps described on [live transfer config documentation](docs/config_live_transfer.md).
 
 ## Env Variables:
 

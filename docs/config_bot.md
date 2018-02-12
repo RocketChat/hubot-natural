@@ -1,8 +1,6 @@
-# Rouanet Bot
+# Hubot Natural Bot
 
-Rouanet Bot is an open source project developed by LAPPIS (Laboratório Avançado de Produção, Pesquisa e Inovação em Software), from Universidade de Brasília, in colab with Ministério da Cultura, in order to respond user's answers related to Lei Rouanet. The project is developed based on Rocket Chat and Hubot Natural.
-
-## Adding Rouanet Bot
+## Adding Hubot Natural Bot
 
 **In case of services are running in development mode, its not necessary to do additional configurations, once the bot is automatically configurated by the script `docker/development/bot_config.sh`, executed by the previous command. Therefore the services must be properly running and ready to use!**
 
