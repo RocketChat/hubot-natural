@@ -7,12 +7,12 @@ import os
 
 host = "http://rocketchat:3000"
 path = "/api/v1/login"
-admin_name = os.getenv('ADMIN_USERNAME')
-admin_password = os.getenv('ADMIN_PASS')
-bot_name = os.getenv('ROCKETCHAT_USER')
-bot_email = os.getenv('ROCKETCHAT_USER') + '@email.com'
-bot_password = os.getenv('ROCKETCHAT_PASSWORD')
 
+admin_name = 'ADMIN_USERNAME'
+admin_password = 'ADMIN_PASS'
+bot_name = 'ROCKETCHAT_USER'
+bot_password = 'ROCKETCHAT_PASSWORD'
+bot_email = botname + '@email.com'
 
 def get_authentication_token():
     login_data = {"username": admin_name, "password": admin_password}
