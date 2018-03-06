@@ -2,7 +2,7 @@
 
 In order to user `Live Transfer` feature, it is necessary to do some steps.
 
-The first thing to do is to set the department hash, on the file used as corpus on bot. The department hash must be placed on `department` field, in the section named `livechat-transfer`, as showed on the image below. The file being used as corpus is the one defined on field `HUBOT_CORPUS`field, at docker-compose file: `production.yml` or `development.yml`, in our case.
+The first thing to do is to set the department hash, on the file used as corpus on bot. The department hash must be placed on `department` field, in the section named `livechat-transfer`, as showed on the image below. The file being used as corpus is the one defined on field `HUBOT_CORPUS`field, at docker-compose file.
 
 ![Updating corpus file](https://gitlab.com/lappis-unb/projects/minc/rouanet-bot/wikis/images/update_corpus.png)
 

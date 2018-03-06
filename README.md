@@ -179,7 +179,9 @@ In order to correctly use Hubot Natural, after running `docker-compose up` comma
 
 The first one is to do manually the steps described at [bot config documentation](docs/config_bot.md).
 
-The second option is to execute the script `bot_config.py`, located at root directory on project. That will automatically configure bot based on following variables defined on script: `admin_name, admin_password, bot_name` and `bot_password`.  It is important to remember of properly set the values of this variables according to the context. The values used on `bot_name` and `bot_password` must be the same defined on docker-compose.yml, on the variables `ROCKETCHAT_USER` and `ROCKETCHAT_PASSWORD` respectively.
+The second option is to execute the script `bot_config.py`, located at root directory on project. That will automatically configure bot based on following variables defined on script: `admin_name, admin_password, bot_name` and `bot_password`.  It is important to remember of properly set the values of this variables according to the context. The values used on `bot_name` and `bot_password` must be the same defined on docker-compose.yml, on the variables `ROCKETCHAT_USER` and `ROCKETCHAT_PASSWORD` respectively. And the values defined at `admin_name` and `admin_password` variables must be the credentials of an pre existent user on rocketchat, that has admin permissions.
+
+To create an admin user automatically while executing the services define the variables `ADMIN_USERNAME` and `ADMIN_PASS` to rocketchat service on `docker-compose.yml`.
 
 ## Deploy with Hubot
 

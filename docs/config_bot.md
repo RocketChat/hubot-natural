@@ -2,10 +2,6 @@
 
 ## Adding Hubot Natural Bot
 
-**In case of services are running in development mode, its not necessary to do additional configurations, once the bot is automatically configurated by the script `docker/development/bot_config.sh`, executed by the previous command. Therefore the services must be properly running and ready to use!**
-
-Otherwise if services are running in production mode, execute following steps.
-
 To add the bot into your Rocket Chat, you must create an administrator account. In the initial screen, click on **Register a new account**, and fill the informations, you don't need to use a real email account.
 
 ![New account example](https://gitlab.com/lappis-unb/projects/minc/rouanet-bot/wikis/images/new_account.png)
