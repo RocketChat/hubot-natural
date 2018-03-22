@@ -42,7 +42,9 @@ services:
 
   hubot-natural:
     # image: diegodorgam/hubot-natural:latest
-    build: .
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     restart: unless-stopped
     environment:
       - HUBOT_ADAPTER=rocketchat
@@ -50,7 +52,7 @@ services:
       - HUBOT_OWNER=RocketChat
       - HUBOT_DESCRIPTION='Hubot natural language processing'
       - HUBOT_LOG_LEVEL=debug
-      - HUBOT_CORPUS=training_data/corpus.yml
+      - HUBOT_CORPUS=training_data/catbot-en.yml
       - HUBOT_LANG=pt
       - RESPOND_TO_DM=true
       - RESPOND_TO_LIVECHAT=true
