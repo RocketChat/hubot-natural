@@ -25,13 +25,18 @@ common.stringElseRandomKey = (variable) ->
   if variable instanceof Array
     variable[Math.floor(Math.random() * variable.length)]
 
-getYAMLFiles = (filepath) ->
+getYAMLFiles = (filepath, recursive = false) ->
   listFile = fs.readdirSync filepath
+
   dataFiles = []
-  if listFile.length > 0
-    dataFiles = listFile.map (filename) ->
-      return yaml.safeLoad fs.readFileSync filepath + '/' + filename, 'utf8'
-  else
+  for filename in listFile
+    file = filepath + '/' + filename
+    if fs.lstatSync(file).isFile()
+      dataFiles.push(yaml.safeLoad fs.readFileSync file, 'utf8')
+    else if recursive
+      dataFiles = dataFiles.concat(getYAMLFiles file, recursive)
+
+  if dataFiles.lenght is 0
     console.error('The directory: ' + filepath + ' is empty.')
   return dataFiles
 
@@ -61,7 +66,8 @@ common.loadConfigfile = (filepath) ->
       return yaml.safeLoad fs.readFileSync filepath, 'utf8'
 
     else if fs.lstatSync(filepath).isDirectory()
-      yamlFiles = getYAMLFiles(filepath)
+      recursiveTraining = process.env.HUBOT_RECURSIVE_TRAINING || false
+      yamlFiles = getYAMLFiles(filepath, recursiveTraining)
       return concatYAMLFiles(yamlFiles)
 
   catch err

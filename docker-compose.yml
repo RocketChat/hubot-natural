@@ -51,6 +51,7 @@ services:
       - HUBOT_DESCRIPTION='Hubot natural language processing'
       - HUBOT_LOG_LEVEL=debug
       - HUBOT_CORPUS=training_data/corpus.yml
+      - HUBOT_RECURSIVE_TRAINING=false
       - HUBOT_LANG=pt
       - RESPOND_TO_DM=true
       - RESPOND_TO_LIVECHAT=true
