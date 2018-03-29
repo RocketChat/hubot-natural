@@ -37,7 +37,7 @@ sendWithNaturalDelay = (msgs, elapsed = 0) ->
   , delay
 
 createMatch = (text) ->
-  return res.message.text.match new RegExp('\\b' + text + '\\b', 'i')
+  return text.match new RegExp('\\b' + text + '\\b', 'i')
 
 module.exports = (_config, robot) ->
   global.config = _config
