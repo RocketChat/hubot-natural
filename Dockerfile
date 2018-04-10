@@ -4,6 +4,7 @@ LABEL mantainer "Diego Dorgam <diego.dorgam@rocket.chat>"
 
 ENV HUBOT_LANG='en'                                                  \
     HUBOT_CORPUS='training_data/corpus.yml'                          \
+    HUBOT_RECURSIVE_TRAINING=false                                   \
     HUBOT_ADAPTER=rocketchat                                         \
     HUBOT_OWNER=RocketChat                                           \
     HUBOT_NAME=HubotNatural                                          \
