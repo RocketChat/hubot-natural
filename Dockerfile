@@ -10,6 +10,7 @@ ENV HUBOT_LANG='en'                                                  \
     HUBOT_DESCRIPTION="Processamento de linguagem natural com hubot" \
     HUBOT_LOG_LEVEL=debug                                            \
     ROCKETCHAT_URL=http://rocketchat:3000                            \
+    ROCKETCHAT_USESSL='true'                                         \
     ROCKETCHAT_ROOM=GENERAL                                          \
     ROCKETCHAT_USER=chatbot                                          \
     ROCKETCHAT_PASSWORD=@12345@                                      \
