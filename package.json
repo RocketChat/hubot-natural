@@ -1,22 +1,57 @@
 {
   "name": "hubot-natural",
-  "version": "0.0.8",
-  "private": true,
-  "author": "Diego Dorgam <diego.dorgam@rocket.chat>",
-  "description": "NLP YAML oriented chatbot",
-  "dependencies": {
-    "coffee-script": "*",
-    "hubot": "^3.0.1",
-    "hubot-help": "^0.2.2",
-    "hubot-redis-brain": "0.0.4",
-    "hubot-rocketchat": "*",
-    "js-yaml": "^3.2.5",
-    "natural": "^0.5.0"
+  "version": "0.1.0",
+  "author": {
+    "name": "Rocket.Chat",
+    "url": "https://rocket.chat/"
   },
-  "devDependencies": {
-    "coffeelint": "^2.0.7"
+  "contributors": [
+    {
+      "name": "Diego Dorgam",
+      "email": "diego.dorgam@rocket.chat"
+    },
+    {
+      "name": "Rodrigo Nascimento",
+      "email": "rodrigo.nascimento@rocket.chat"
+    },
+    {
+      "name": "Aaron Ogle",
+      "email": "aaron.ogle@rocket.chat"
+    },
+    {
+      "name": "Diego Sampaio",
+      "email": "diego.sampaio@rocket.chat"
+    }
+  ],
+  "description": "Hubot Rocket.Chat Chatbot with Natural Language Processing",
+  "keywords": [
+    "nlp",
+    "hubot",
+    "natural",
+    "rocketchat",
+    "rocket",
+    "chat"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RocketChat/hubot-natural.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RocketChat/hubot-natural/issues",
+    "email": "support@rocket.chat"
+  },
+  "dependencies": {
+    "coffeescript": "^2.2.2",
+    "hubot": "^3.0.1",
+    "hubot-redis-brain": "0.0.4",
+    "hubot-rocketchat": "^2.0.0",
+    "js-yaml": "^3.2.5",
+    "natural": "^0.5.6",
+    "webworker-threads": "0.7.13"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "> 8.0.0",
+    "npm": "> 5.0.0"
   }
 }
