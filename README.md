@@ -1,93 +1,60 @@
-# Hubot Natural
+# HubotNatural
 
-[![Build Status](https://travis-ci.org/RocketChat/hubot-natural.svg?branch=master)](https://travis-ci.org/RocketChat/hubot-natural)
+<!--[![Build Status](https://travis-ci.org/RocketChat/hubot-natural.svg?branch=master)](https://travis-ci.org/RocketChat/hubot-natural)
+-->
 
-## Natural Language ChatBot
+### Open Source Natural Language Processing for Rocket.Chat Bots
 
-Hubot is one of the most famous bot creating framework on the web, that's because github made it easy to create. If you can define your commands in a RegExp param, basically you can do anything with Hubot. That's a great contribution to ChatOps culture.
 
-Inspired by that, we wanted to provide the same simplicity to our community to develop chatbots that can actually process natural language and execute tasks, as easy as building RegExp oriented bots.
+HubotNatural is an easy to use NLP chatbot made in Hubot to be used in Rocket.Chat servers as welcoming and productivity bots, personal assistants or livechat agents.
 
-So, we've found a really charming project to initiate from, the [Digital Ocean's Heartbot](https://github.com/digitalocean/heartbot) _a shot of love to for your favorite chat client_ =)
+![](https://media.giphy.com/media/m9cEPD3gtiUjzU42sm/giphy.gif)
 
-Based on Heartbot, we introduced some NLP power from [NaturalNode](https://github.com/NaturalNode/natural) team, an impressive collections of Natural Language Processing libs made to be used in NodeJS.
+Using Rocket.Chat OMNIChannel integration, you can set up you chatbot to respond in your own facebook page, from within your Rocket.Chat instance.
 
-And so, the _magic_ happens...
+![](https://media.giphy.com/media/5YucDH6XMvnC6RjsZB/giphy.gif)
 
-Welcome to *HubotNatural*, a new an exciting chatbot framework based in Hubot and NaturalNode libs, with an simple and extensible architecture designed by Digital Ocean's HeartBot Team, made with love and care by Rocket.Chat Team.  
+## How to start
 
-We hope you enjoy the project and find some time to contribute.  
+Your chatbot is a simple server that needs to be hosted somewhere. We will demonstrate how easy it is to start your bot in many ways...
 
-## How it Works
+## Define Variables
 
-HubotNatural is made to be easy to train and extend. So what you have to understand basically is that it has an YAML corpus, where you can design your chatbot interactions using nothing but YAML's notation.
+<!-- insert variables table -->
+HubotNatural works with hubot-rocketchat adapter environment variables and a few of it's own.  
+Take a look at them all:
 
-All YAML interactions designed in corpus can have it's own parameters, which will be processed by an event class.
-
-Event classes give the possibility to extend HubotNatural. By writing your own event classes you can give your chatbot the skills to interact with any services you need.
-
-### YAML corpus
-
-The YAML file is loaded in `scripts/index.js`, parsed and passed to chatbot bind, which will be found in `scripts/bot/index.js`, the cortex of the bot, where all information flux and control are programmed.
-
-The YAML corpus is located in `training_data/corpus.yml` and it's basic structure looks like this:  
-
-```yaml
-trust: .85
-interactions:
-  - name: salutation
-    expect:
-      - hi there
-      - hello everyone
-      - what's up bot
-      - good morning
-    answer:
-      - - Hello there $user, how are you?
-        - Glad to be here...
-      - Hey there, nice to see you!
-    event: respond
-```
-
-What this syntax means:
-
-- `trust`: the minimum level of certain that must be returned by the classifier in order to run this interaction. Value is 0 to 1 (0% to 100%). If a classifier returns a value of certainty minor than `trust`, the bots responds with and error interaction node.  
-- `interactions`: An vector with lots of interaction nodes that will be parsed. Every interaction designed to your chatbot must be under an interaction.node object structure.
-- `name`: that's the unique name of the interaction by which it will be identified. Do not create more than one interaction with the same `node.name` attribute.  
-- `expect`: Those are the sentences that will be given to the bots training. They can be strings or keywords vectors, like `['consume','use']`.   
-- `answer`: the messages that will be sent to the user, if the classifiers get classified above the trust level. The `node.message` will be parsed and sent by event class. In order to use multiline strings inside your YAML, you must follow the [YAML Multiline Strings](http://yaml-multiline.info/) syntax. You can specify variables in message. By default HubotNatural comes with `$user`, `$bot` and `$room` variables.
-- `event`: is the name of the CoffeeScript or JavaScript Class inside `scripts/events`, without the file extension.
-
-### Event Coffee Classes
-
-Event classes can be written to extend the chatbot skills. They receives the interaction object and parse the message, like this:  
-
-```yaml
-class respond
-  constructor: (@interaction) ->
-  process: (msg) =>
-    sendMessages(stringElseRandomKey(@interaction.answer), msg)
-
-module.exports = respond
-```
-
-It's base constructor is the `@interaction` node so you can have access to all attributes inside an interaction just using `@interaction.attribute`. Here you can parse texts, call APIs, read files, access databases, and everything else you need.  
-You may want to use the function `stringElseRandomKey` to get a random element of a list, if it's parameter is a list, and use the function `sendMessages` to send messages to an user.
-
-#### Logistic Regression Classifier
-
-The NaturalNode library comes with two kinds of classifiers, the Naive Bayes classifier known as the `BayesClassifier` and the `LogisticRegressionClassifier` functions. By default, HubotNatural uses the `LogisticRegressionClassifier`. It just came with better results in our tests.
-
-#### PorterStemmer
-
-There is also more than one kind of stemmer. You should set the stemmer to define your language. By default we use the PorterStemmerPt for portuguese, but you can find english, russian, italian, french, spanish and other stemmers in NaturalNode libs, or even write your own based on those.
-
-Just check inside `node_modules/natural/lib/natural/stemmers/`.
-
-To change the stemmers language, just set the environment variable `HUBOT_LANG` as `pt`, `en`, `es`, and any other language termination that corresponds to a stemmer file inside the above directory.
+| Variable name | Value | Description |
+|---- |---- |---- |
+| `HUBOT_ADAPTER` | rocketchat | the hubot adapter for rocketchat|
+| `HUBOT_OWNER` | RocketChat | You can put your name here |
+| `HUBOT_NAME` | 'Bot Name'| Your bot screen name |
+| `HUBOT_DESCRIPTION` | 'Description of your bot'| some description |
+| `HUBOT_HTTPD` | true | Define if your bot will have a http server ruinning |
+| `HUBOT_LOG_LEVEL` | debug | Log level, debug/error| 
+| `ROCKETCHAT_URL` | https://open.rocket.chat | the Rocket.Chat server URL|
+| `ROCKETCHAT_USESSL` | true | Adapter flag to indicate that Rocket.Chat's server is running SSL |
+| `ROCKETCHAT_ROOM` | GENERAL | the room ID to be joining, `GENERAL`(in caps) is actually an ID and not the name of the room |
+| `LISTEN_ON_ALL_PUBLIC` | true | Your bot should listen to all public channels |
+| `RESPOND_TO_DM` | true | Your bot should listen to all Direct Message sent to it |
+| `RESPOND_TO_LIVECHAT` | true | Your bot should hear every livechat message arriving to him |
+| `ROCKETCHAT_USER` | bot_user_name | your bot username for login purposes |
+| `ROCKETCHAT_PASSWORD` | bot_password | your bot user password in plain text |
+| `ROCKETCHAT_AUTH` | password | this is the TYPE of authentication used, stick to `password` |
+| `NATURAL_CORPUS` | training_data/corpus.yml | The path and file name of the YAML corpus | 
+| `NATURAL_LANG` | 'en' | sets the language used for communicating with the bot, `en` for english, `pt` for portuguese and `es` for spanish | 
+ 
+You can check [hubot-rocketchat](https://github.com/RocketChat/hubot-rocketchat) adapter project for more details on config variables.
 
 ## Deploy with Docker
 
-We have a Dockerfile that builds a lightweight image based in Linux Alpine with all the repository content so you can upload that image to a docker registry and deploy your chatbot from there. It is located on `docker` folder.
+<!-- Docker run command with variables -->
+
+<!-- Docker compose command with simply hubotnatural in it -->
+
+<!-- Docker build command to save it in dockerhub -->
+
+We have a Dockerfile that builds a lightweight image based in Linux Alpine with all the repository content so you can upload that image to a docker registry and deploy your chatbot from there.
 
 You also can use `docker-compose.yml` file to load a local instance of Rocket.Chat, MongoDB and HubotNatural services, where you can change the parameters if you must.
 
@@ -164,16 +131,6 @@ You can change the attributes of variables and volumes to your specific needs an
 
 If you want to run only the hubot-natural service to connect an already running instance of Rocket.Chat, you just need to remember to set the `ROCKETCHAT_URL` to a correct value, like `https://open.rocket.chat`.
 
-## Bot configuration
-
-In order to correctly use Hubot Natural, after running `docker-compose up` command, it is necessary to do some configuration steps. To do that, there are two main options:
-
-The first one is to do manually the steps described at [bot config documentation](docs/config_bot.md).
-
-The second option is to execute the script `bot_config.py`, located at root directory on project. That will automatically configure bot based on following variables defined on script: `admin_name, admin_password, bot_name` and `bot_password`.  It is important to remember of properly set the values of this variables according to the context. The values used on `bot_name` and `bot_password` must be the same defined on docker-compose.yml, on the variables `ROCKETCHAT_USER` and `ROCKETCHAT_PASSWORD` respectively. And the values defined at `admin_name` and `admin_password` variables must be the credentials of an pre existent user on rocketchat, that has admin permissions.
-
-To create an admin user automatically, before executing the services, just define the variables `ADMIN_USERNAME` and `ADMIN_PASS` for rocketchat service on `docker-compose.yml`.
-
 ## Deploy with Hubot
 
 To deploy HubotNatural, first you have to install yo hubot-generator:
@@ -244,35 +201,6 @@ wait a minute for the loading process, and then you can talk to mybot.
 
 Take a look to adapters to run your bot in other platafforms.
 
-## Configure Live Transfer
-
-It's possible to configure Hubot Natural to redirect conversation to a real person, in moments when the bot can not help users as much as needed.
-To activate and configure `Live Transfer` feature, follow the steps described on [live transfer config documentation](docs/config_live_transfer.md).
-
-## Env Variables:
-
-In your terminal window, run:
-
-```shell
-export HUBOT_ADAPTER=rocketchat
-export HUBOT_OWNER=RocketChat
-export HUBOT_NAME='Bot Name'
-export HUBOT_DESCRIPTION='Description of your bot'
-export ROCKETCHAT_URL=https://open.rocket.chat
-export ROCKETCHAT_ROOM=GENERAL
-export LISTEN_ON_ALL_PUBLIC=false
-export RESPOND_TO_DM=true
-export RESPOND_TO_LIVECHAT=true
-export ROCKETCHAT_USER=catbot
-export ROCKETCHAT_PASSWORD='bot password'
-export ROCKETCHAT_AUTH=password
-export HUBOT_LOG_LEVEL=debug
-export HUBOT_CORPUS='corpus.yml'
-export HUBOT_LANG='en'
-bin/hubot -a rocketchat --name $HUBOT_NAME
-```  
-
-You can check [hubot-rocketchat](https://github.com/RocketChat/hubot-rocketchat) adapter project for more details.
 
 ### PM2 Json File
 
@@ -353,12 +281,100 @@ You can also instantiate more than one process with PM2, if you want for example
 
 And of course, you can go nuts setting configs for different plataforms, like facebook mensenger, twitter or telegram ;P.
 
-## Hubot Adapters
 
-Hubot comes with at least 38 adapters, including Rocket.Chat addapter of course.  
-To connect to your Rocket.Chat instance, you can set env variables, our config pm2 json file.
+## How does it work
 
-Checkout other [hubot adapters](https://github.com/github/hubot/blob/master/docs/adapters.md) for more info.
+
+HubotNatural is made to be easy to train and extend. So what you have to understand basically is that it has an YAML corpus, where you can design your chatbot interactions using nothing but YAML's notation.
+
+All YAML interactions designed in corpus can have it's own parameters, which will be processed by an event class.
+
+Event classes give the possibility to extend HubotNatural. By writing your own event classes you can give your chatbot the skills to interact with any services you need.
+
+### YAML corpus
+
+The YAML file is loaded in `scripts/index.js`, parsed and passed to chatbot bind, which will be found in `scripts/bot/index.js`, the cortex of the bot, where all information flux and control are programmed.
+
+The YAML corpus is located in `training_data/corpus.yml` and it's basic structure looks like this:  
+
+```yaml
+trust: .85
+interactions:
+  - name: salutation
+    expect:
+      - hi there
+      - hello everyone
+      - what's up bot
+      - good morning
+    answer:
+      - Hello there $user, how are you?
+      - Glad to be here...
+    event: respond
+    type: block
+```
+
+What this syntax means:
+
+- `trust`: the minimum level of certain that must be returned by the classifier in order to run this interaction. Value is 0 to 1 (0% to 100%). If a classifier returns a value of certainty minor than `trust`, the bots responds with and error interaction node.  
+- `interactions`: An vector with lots of interaction nodes that will be parsed. Every interaction designed to your chatbot must be under an interaction.node object structure.
+- `name`: that's the unique name of the interaction by which it will be identified. Do not create more than one interaction with the same `node.name` attribute.  
+- `expect`: Those are the sentences that will be given to the bots training. They can be strings or keywords vectors, like `['consume','use']`.   
+- `answer`: the messages that will be sent to the user, if the classifiers get classified above the trust level. The `node.message` will be parsed and sent by event class. You can specify variables in message. By default HubotNatural comes with `$user`, `$bot` and `$room` variables.  
+- `event`: is the name of the CoffeeScript or JavaScript Class inside `scripts/events`, without the file extension.  
+- `type`: This is an example of an event attribute. The type attribute is interpreted by respond.coffee class, and basically defines if all lines in message should be send as a `block` or if the bot should randomly send only one of the lines defined.
+
+### Action Classes
+
+Action classes can be written to extend the chatbot skills. They receives the interaction object and parse the message, like this:  
+
+```yaml
+class respond
+  constructor: (@interaction) ->
+  process: (msg) =>
+    type = @interaction.type?.toLowerCase() or 'random'
+    switch type
+      when 'block'
+        @interaction.answer.forEach (line) ->
+          message = msgVariables line, msg
+          msg['send'] message
+      when 'random'
+        message = stringElseRandomKey @interaction.answer
+        message = msgVariables message, msg
+        msg['send'] message
+
+module.exports = respond
+```
+
+It's base constructor is the `@interaction` node so you can have access to all attributes inside an interaction just using `@interaction.attribute`. Here you can parse texts, call APIs, read files, access databases, and everything else you need.
+
+#### Logistic Regression Classifier
+
+The NaturalNode library comes with two kinds of classifiers, the Naive Bayes classifier known as the `BayesClassifier` and the `LogisticRegressionClassifier` functions. By default, HubotNatural uses the `LogisticRegressionClassifier`. It just came with better results in our tests.
+
+#### PorterStemmer
+
+There is also more than one kind of stemmer. You should set the stemmer to define your language. By default we use the PorterStemmerPt for portuguese, but you can find english, russian, italian, french, spanish and other stemmers in NaturalNode libs, or even write your own based on those.
+
+Just check inside `node_modules/natural/lib/natural/stemmers/`.
+
+To change the stemmers language, just set the environment variable `HUBOT_LANG` as `pt`, `en`, `es`, and any other language termination that corresponds to a stemmer file inside the above directory.
+
+
+## Where the inspiration came from?
+
+Hubot is one of the most famous bot creating framework on the web, that's because github made it easy to create. If you can define your commands in a RegExp param, basically you can do anything with Hubot. That's a great contribution to ChatOps culture.
+
+Inspired by that, we wanted to provide the same simplicity to our community to develop chatbots that can actually process natural language and execute tasks, as easy as building RegExp oriented bots.
+
+So, we've found a really charming project to initiate from, the [Digital Ocean's Heartbot](https://github.com/digitalocean/heartbot) _a shot of love to for your favorite chat client_ =)
+
+Based on Heartbot, we introduced some NLP power from [NaturalNode](https://github.com/NaturalNode/natural) team, an impressive collections of Natural Language Processing libs made to be used in NodeJS.
+
+And so, the _magic_ happens...
+
+Welcome to *HubotNatural*, a new an exciting chatbot framework based in Hubot and NaturalNode libs, with an simple and extensible architecture designed by Digital Ocean's HeartBot Team, made with love and care by Rocket.Chat Team.  
+
+We hope you enjoy the project and find some time to contribute.  
 
 ## Thanks to
 
