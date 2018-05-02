@@ -68,7 +68,7 @@ common.regexEscape = string =>
   string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")
 ;
 
-common.getConfigFilePath = () => process.env.HUBOT_CORPUS || 'training_data/corpus.yml';
+common.getConfigFilePath = () => process.env.NATURAL_CORPUS || 'training_data/corpus.yml';
 
 common.loadConfigfile = function(filepath) {
   try {

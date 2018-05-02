@@ -12,7 +12,7 @@ const natural = require('natural');
 
 const classifier = {};
 
-const lang = (process.env.HUBOT_LANG || 'en');
+const lang = (process.env.NATURAL_LANG || 'en');
 
 let { PorterStemmer } = natural;
 if (lang !== 'en') {

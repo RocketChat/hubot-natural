@@ -59,8 +59,8 @@ services:
       - ROCKETCHAT_PASSWORD=123456
       - ROCKETCHAT_AUTH=password
       - HUBOT_LOG_LEVEL=debug
-      - HUBOT_CORPUS=training_data/catbot-en.yml
-      - HUBOT_LANG='en'
+      - NATURAL_CORPUS=training_data/catbot-en.yml
+      - NATURAL_LANG='en'
       # - LIVECHAT_DEPARTMENT_ID=kotKaj9JptWvwtJfJ
     volumes:
       - ./scripts:/home/hubotnat/bot/scripts
