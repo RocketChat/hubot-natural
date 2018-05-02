@@ -3,10 +3,8 @@
 <!--[![Build Status](https://travis-ci.org/RocketChat/hubot-natural.svg?branch=master)](https://travis-ci.org/RocketChat/hubot-natural)
 -->
 
-Open Source Natural Language Processing for Rocket.Chat Bots
+### Open Source Natural Language Processing for Rocket.Chat Bots
 
-
-## What is it for
 
 HubotNatural is an easy to use NLP chatbot made in Hubot to be used in Rocket.Chat servers as welcoming and productivity bots, personal assistants or livechat agents.
 
@@ -23,6 +21,30 @@ Your chatbot is a simple server that needs to be hosted somewhere. We will demon
 ## Define Variables
 
 <!-- insert variables table -->
+HubotNatural works with hubot-rocketchat adapter environment variables and a few of it's own.  
+Take a look at them all:
+
+| Variable name | Value | Description |
+|---- |---- |---- |
+| `HUBOT_ADAPTER` | rocketchat | the hubot adapter for rocketchat|
+| `HUBOT_OWNER` | RocketChat | You can put your name here |
+| `HUBOT_NAME` | 'Bot Name'| Your bot screen name |
+| `HUBOT_DESCRIPTION` | 'Description of your bot'| some description |
+| `HUBOT_HTTPD` | true | Define if your bot will have a http server ruinning |
+| `HUBOT_LOG_LEVEL` | debug | Log level, debug/error| 
+| `ROCKETCHAT_URL` | https://open.rocket.chat | the Rocket.Chat server URL|
+| `ROCKETCHAT_USESSL` | true | Adapter flag to indicate that Rocket.Chat's server is running SSL |
+| `ROCKETCHAT_ROOM` | GENERAL | the room ID to be joining, `GENERAL`(in caps) is actually an ID and not the name of the room |
+| `LISTEN_ON_ALL_PUBLIC` | true | Your bot should listen to all public channels |
+| `RESPOND_TO_DM` | true | Your bot should listen to all Direct Message sent to it |
+| `RESPOND_TO_LIVECHAT` | true | Your bot should hear every livechat message arriving to him |
+| `ROCKETCHAT_USER` | bot_user_name | your bot username for login purposes |
+| `ROCKETCHAT_PASSWORD` | bot_password | your bot user password in plain text |
+| `ROCKETCHAT_AUTH` | password | this is the TYPE of authentication used, stick to `password` |
+| `NATURAL_CORPUS` | training_data/corpus.yml | The path and file name of the YAML corpus | 
+| `NATURAL_LANG` | 'en' | sets the language used for communicating with the bot, `en` for english, `pt` for portuguese and `es` for spanish | 
+ 
+You can check [hubot-rocketchat](https://github.com/RocketChat/hubot-rocketchat) adapter project for more details on config variables.
 
 ## Deploy with Docker
 
@@ -179,30 +201,6 @@ wait a minute for the loading process, and then you can talk to mybot.
 
 Take a look to adapters to run your bot in other platafforms.
 
-## Env Variables:
-
-In your terminal window, run:
-
-```shell
-export HUBOT_ADAPTER=rocketchat
-export HUBOT_OWNER=RocketChat
-export HUBOT_NAME='Bot Name'
-export HUBOT_DESCRIPTION='Description of your bot'
-export ROCKETCHAT_URL=https://open.rocket.chat
-export ROCKETCHAT_ROOM=GENERAL
-export LISTEN_ON_ALL_PUBLIC=false
-export RESPOND_TO_DM=true
-export RESPOND_TO_LIVECHAT=true
-export ROCKETCHAT_USER=catbot
-export ROCKETCHAT_PASSWORD='bot password'
-export ROCKETCHAT_AUTH=password
-export HUBOT_LOG_LEVEL=debug
-export HUBOT_CORPUS='corpus.yml'
-export HUBOT_LANG='en'
-bin/hubot -a rocketchat --name $HUBOT_NAME
-```  
-
-You can check [hubot-rocketchat](https://github.com/RocketChat/hubot-rocketchat) adapter project for more details.
 
 ### PM2 Json File
 
