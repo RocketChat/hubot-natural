@@ -42,7 +42,6 @@ services:
 
   hubot-natural:
     image: diegodorgam/hubot-natural:latest
-    #build: .
     restart: unless-stopped
     environment:
       - HUBOT_ADAPTER=rocketchat
