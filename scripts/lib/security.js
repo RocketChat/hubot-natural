@@ -1,17 +1,20 @@
 const security = {};
 
-security.getUserRoles = function(robot) {
+security.getUserRoles = async function(robot) {
   const usersAndRoles = {};
-  robot.adapter.callMethod('getUserRoles').then(function(users) {
+  try {
+    const users = await robot.adapter.callMethod('getUserRoles');
     users.forEach(function(user) {
       user.roles.forEach(function(role) {
         if (typeof usersAndRoles[role] === 'undefined') {
           usersAndRoles[role] = [];
         }
         usersAndRoles[role].push(user.username);
-      });
-    });
-  });
+      })
+    })
+  }catch(err){
+    console.log(err);
+  }
   return usersAndRoles;
 };
 
