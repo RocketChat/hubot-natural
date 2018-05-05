@@ -8,7 +8,7 @@
 
 const { msgVariables, stringElseRandomKey } = require('../lib/common');
 
-const livechat_department = (process.env.LIVECHAT_DEPARTMENT_ID || null );
+const livechat_department = (process.env.LIVECHAT_DEPARTMENT_ID || null);
 
 class Respond {
   constructor(interaction) {
@@ -40,29 +40,33 @@ class Respond {
     }
   }
 
-
   livechatTransfer(msg, delay, lc_dept, offline_message, type) {
     if (delay == null) { delay = 3000; }
-    return setTimeout((() => msg.robot.adapter.callMethod('livechat:transfer', {
-                      roomId: msg.envelope.room,
-                      departmentId: lc_dept
-                    }
-                    ).then(function(result) {
-                      if (result === true) {
-                        return console.log('livechatTransfer executed!');
-                      } else {
-                        console.log('livechatTransfer NOT executed!');
-                        switch (type) {
-                          case 'block':
-                            var messages = offline_message.map(line => msgVariables(line, msg));
-                            return msg.sendWithNaturalDelay(messages);
-                          case 'random':
-                            var message = stringElseRandomKey(offline_message);
-                            message = msgVariables(message, msg);
-                            return msg.sendWithNaturalDelay(message);
-                        }
-                      }
-                }) ), delay);
+    async function getResult() {
+      try {
+        let result = await msg.robot.adapter.callMethod('livechat:transfer', {
+          roomId: msg.envelope.room,
+          department: lc_dept
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      if (result === true) {
+        return console.log('livechatTransfer executed!');
+      } else {
+        switch (type) {
+          case 'block':
+            var messages = offline_message.map(line => msgVariables(line, msg));
+            return msg.sendWithNaturalDelay(messages);
+          case 'random':
+            var messages = offline_message.map(line => msgVariables(line, msg));
+            var message = stringElseRandomKey(offline_message);
+            message = msgVariables(message, msg);
+            return msg.sendWithNaturalDelay(message);
+        }
+      }
+    }
+    return setTimeout(getResult(), delay);
   }
 }
 
